@@ -1,0 +1,76 @@
+body {
+    background: #181818;
+    color: #fff;
+}
+
+header {
+    display: flex;
+    background-color: #000000;
+    border-bottom: 2px solid #2c2c2c;
+    padding: 20px 50px;
+}
+
+
+/* DASHBOARD */
+
+.board-container {
+    display: flex;
+    flex: 1;
+    
+}
+
+.menu {
+    padding: 10px 30px 20px 30px; 
+    display: flex;
+    flex-direction: column;
+    max-width: fit-content;
+    
+}
+
+.menu div {    
+    font-size: 25px;
+    margin-top: 30%;
+    border-bottom: 3px solid #2c2c2c;
+    padding: 10px;
+}
+
+.data-boards {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.request-bar {
+    display: flex;
+    gap: 30px;
+    padding: 10px;
+    font-style: italic;
+    font-size: 18px;
+    height: fit-content;
+}
+
+.requests {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.request-row {
+    display: flex;
+    flex-direction: row;
+    background-color: #3f3f3f;
+    gap: 10px;
+    padding: 10px;
+    border: 3px solid #2c2c2c;
+    border-radius: 10px;
+    align-items: center;
+}
+
+.request-btn {
+    border: 4px solid #2c2c2c;
+    border-radius: 10px;
+    background-color: antiquewhite;
+    padding: 3px;
+    color: #000000;
+    font-weight: 700;
+}
