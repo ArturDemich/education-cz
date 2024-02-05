@@ -80,14 +80,28 @@ header {
 }
 
 .request-row {
-    display: flex;
-    flex-direction: row;
     background-color: #3f3f3f;
-    gap: 10px;
     padding: 5px 10px;
     border: 3px solid #2c2c2c;
-    border-radius: 10px;
+    border-radius: 6px;
     align-items: center;
+}
+
+.req-row{
+    flex-direction: row;
+    gap: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.add-content {
+    border-top: 2px solid #5c5c5c;
+    padding-top: 5px;
+    margin-top: 5px;
+}
+
+.coment {
+    max-width: 400px;
 }
 
 .request-row div {
@@ -100,16 +114,16 @@ header {
     flex: 4 !important;
 }
 .surname {
-    flex: 7 !important;
+    flex: 5 !important;
 }
 .number {
-    flex: 5 !important;
+    flex: 7 !important;
 }
 .email {
     flex: 9 !important;
 }
 .birthday {
-    flex: 3 !important;
+    flex: 5 !important;
 }
 .created {
     flex: 9 !important;
@@ -127,6 +141,7 @@ button {
     background: none;
     border: none;  
     padding: 0 10px;  
+    display: flex;
 }
 
 .head-requests div {
