@@ -15,8 +15,9 @@ export async function fetchClientsApi(param) {
         }
 
         const result = await res.json();
+        const reversClients = result.reverse()
         console.log('fetchData', result);
-        return result;
+        return reversClients;
     } catch (error) {
         console.error('Error fetching data:', error);
         throw error;

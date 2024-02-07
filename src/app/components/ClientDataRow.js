@@ -1,13 +1,14 @@
 'use client'
+import React, { useState } from "react"
 import moment from "moment";
-import { useState } from "react";
 import { AiOutlineCopy } from "react-icons/ai"
 
 
 export default function ClientDataRow({ item }) {
     //console.log('ClientDataRow', typeof item)
     const createdAt = moment(item.createdAt).format('YYYY.MM.DD - HH:mm')
-    const [expanded, setExpanded] = useState(false);
+    const [expanded, setExpanded] = useState(false)
+    const [inputText, setInputText] = useState(item.clientText)
    
 
     const handleButtonClick = (event) => {        
@@ -19,6 +20,10 @@ export default function ClientDataRow({ item }) {
         event.stopPropagation()  
         console.log('Content clicked')
     }
+
+    const handleInputChange = (event) => {
+        setInputText(event.target.value);
+    };
   return (
     <>
         <div className="request-row" onClick={() => setExpanded(!expanded)}>
@@ -32,15 +37,15 @@ export default function ClientDataRow({ item }) {
                 <button onClick={handleButtonClick}>Done</button>
             </div>
             {expanded && (
-            <div className="req-row add-content" onClick={handleContentClick}>
+            <div className="add-content" onClick={handleContentClick}>
+                {item.clientText && (
                 <div className="coment">
-                    <div>Повідомлення заявника:</div>
-                    <div>{item.clientText}</div>
-                </div>
+                    <div className="head-content">Повідомлення:</div>
+                    <div className="content-text">{item.clientText}</div>
+                </div>)}
                 <div className="coment">
-                    <div>Коментар: </div>
-                    <div>testovnia</div>
-                    
+                    <div className="head-content">Коментар: </div>
+                    <input className="input-coment" value={inputText} onChange={handleInputChange} />
                 </div>
             </div>)} 
         </div> 

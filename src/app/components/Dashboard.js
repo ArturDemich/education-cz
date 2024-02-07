@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 export default function Dashboard({dataClient}) {   
     const [clients, setClients] = useState()
     const [activBtn, setActivBtn] = useState(3)
+    const [searchInput, setSearchInput] = useState('search')
      
     useEffect( () => {
         !clients && setClients(dataClient)
@@ -17,6 +18,24 @@ export default function Dashboard({dataClient}) {
         setClients(data)
     }
 
+    const search = () => {
+        let filterData = []
+        clients.forEach(obj => {
+            let equle
+            for(let key in obj) {
+                let item = String(obj[key])
+                console.log('search11', item)
+                if(item.toLowerCase().includes(searchInput.toLowerCase())) {
+                    equle = true
+                    filterData.push(obj)
+                    return
+                }
+            }
+        });
+        setClients(filterData)
+        console.log('search', filterData)
+    }
+
     //console.log('DashboardFETCH', clients)
     return (
         <div className="board-container">            
@@ -25,7 +44,8 @@ export default function Dashboard({dataClient}) {
                 <div>Користувачі</div>
             </section>
             <section className="data-boards">
-                <section className="request-bar">
+            <div className="nav-bar">
+                <section className="request-bar">                    
                     <div className={activBtn === 1 ? "requests-btn" + ' ' + "active-btn" : "requests-btn"} onClick={() => getData(1, 'new')}>
                         <span>Нові заявки</span> 
                     </div>
@@ -34,8 +54,12 @@ export default function Dashboard({dataClient}) {
                     </div>
                     <div className={activBtn === 3 ? "requests-btn" + ' ' + "active-btn" : "requests-btn"} onClick={() => getData(3, '')}>
                         <span>Всі заявки</span>                        
-                    </div>
+                    </div> 
                 </section>
+                <section>
+                    <input value={searchInput} onChange={(event) => setSearchInput(event.target.value)} onBlur={() => search()} />
+                </section>
+                </div>
                 <section className="requests">
                 <div className="request-row head-requests">
                     <div className="name">Ім'я</div>

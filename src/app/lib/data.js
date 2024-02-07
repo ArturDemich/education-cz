@@ -6,7 +6,8 @@ export async function fetchClients(params) {
         connectToDB()
         const data = await Client.find(params)
         const clients = JSON.parse(JSON.stringify(data))
-        return clients;
+        const reversClients = clients.reverse()
+        return reversClients;
     } catch (error) {
         console.error('Error fetching data:', error);
         throw error;
