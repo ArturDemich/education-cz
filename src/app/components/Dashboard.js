@@ -2,11 +2,12 @@
 import ClientDataRow from "./ClientDataRow"
 import { fetchClientsApi } from "../ui/data"
 import { useEffect, useState } from "react"
+import { ImSearch } from "react-icons/im"
 
 export default function Dashboard({dataClient}) {   
     const [clients, setClients] = useState()
     const [activBtn, setActivBtn] = useState(3)
-    const [searchInput, setSearchInput] = useState('search')
+    const [searchInput, setSearchInput] = useState('')
      
     useEffect( () => {
         !clients && setClients(dataClient)
@@ -57,7 +58,8 @@ export default function Dashboard({dataClient}) {
                     </div> 
                 </section>
                 <section>
-                    <input value={searchInput} onChange={(event) => setSearchInput(event.target.value)} onBlur={() => search()} />
+                    <input className="search-input" value={searchInput} placeholder="пошук" onChange={(event) => setSearchInput(event.target.value)} onBlur={() => search()} />
+                    <ImSearch style={{left: 15}}/>
                 </section>
                 </div>
                 <section className="requests">
