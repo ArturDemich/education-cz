@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
@@ -10,21 +11,38 @@ body {
 
 header {
   display: flex;
-  flex: 1;
+  justify-content: center;
+  padding: 15px 30px;
+  background-color: #fff;
+}
+.header-container {
   justify-content: space-between;
-  border-bottom: 2px solid gainsboro;
-  padding: 20px 50px;
-}
-
-main {
-  padding: 0 30px; 
-  height: 100vh;
-}
-
-footer {
   display: flex;
   flex: 1;
-  padding: 20px 100px;
+  max-width: 1440px;
+}
+
+
+
+footer {
+  background-color: #f7f7f7;
+  color: #4a4a4a;
+  font-size: .875rem;
+  line-height: 1.7;
+  min-height: 190px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+footer a {
+  text-decoration: none;
+  color: #4a4a4a;
+}
+
+.footer-container {
+  display: flex;
+  flex: 1;
+  max-width: 1440px;
 }
 
 form {
@@ -32,5 +50,11 @@ form {
   flex: 1;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  background-color: #fff;
+}
+
+@media (max-width: 575px) {
+  header {
+    padding: 15px 15px;
+  }
 }
