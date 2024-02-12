@@ -1,25 +1,44 @@
 'use client'
 import { useState } from "react";
+import { postDataClientApi } from "../ui/data";
 
-export default function ApplicantsForm() {
+
+const NAMES = /^[a-zA-Zа-яА-ЯіІїЇєЄёЁґҐ'\-]+(?:\s+[a-zA-Zа-яА-ЯіІїЇєЄёЁґҐ'\-]+)*$/;
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE = /^\+?\d{10,}$/;
+
+
+export default function ApplicantsForm() {  
+  const [nameRule, setNameRule] = useState('')
+  const [surnameRule, setSurnameRule] = useState('')
+  const [emailRule, setEmailRule] = useState('')
+  const [phoneRule, setPhoneRule] = useState('')
+  const [birthdayRule, setBirthdayRule] = useState('')
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
     email: "",
-    phone: "",
+    number: "",
     birthday: "",
-    comment: "",
+    clientText: "",
   });
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    let cleanedValue = value;
+    if (name === 'number') {
+        // Видаляємо всі символи, крім цифр і +
+        cleanedValue = value.replace(/[^\d+]/g, '');
+      }
+    setFormData({ ...formData, [name]: cleanedValue });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
       // Ваша логіка для обробки вірно заповненої форми
+      postDataClientApi(formData)
       console.log("Form submitted:", formData);
     } else {
       console.log("Form validation failed");
@@ -27,27 +46,53 @@ export default function ApplicantsForm() {
   };
 
   const validateForm = () => {
-    const { name, surname, email, phone, birthday } = formData;
-    if (!name || !surname || !email || !phone || !birthday) {
-      return false; // Перевірка чи всі поля заповнені
+    const { name, surname, email, number, birthday } = formData;
+    let isValid = true
+
+    if (!name || !surname || !email || !number || !birthday) {
+      isValid = false; 
     }
-    if (!validateEmail(email)) {
-      return false; // Перевірка електронної пошти
+    if (!validateInputs(NAMES, name)) {
+        setNameRule('Имя указанао неверно!')
+        isValid = false; 
+        
     }
-    if (!validatePhone(phone)) {
-      return false; // Перевірка номера телефону
+    if (!validateInputs(NAMES, surname)) {
+        setSurnameRule('Фамилия указана неверно!')
+        isValid = false; 
     }
-    return true; // Всі перевірки пройдено успішно
+    if (!validateInputs(EMAIL, email)) {
+        setEmailRule('Електронная почта указана неверно!')
+        isValid = false;
+    }
+    if (!validateInputs(PHONE, number)) {
+        setPhoneRule('Контактный телефон указана неверно!')
+        isValid = false;
+    }
+    if (!validateBirthdate(birthday)) {        
+        isValid = false; 
+    }    
+    return isValid;
+  };  
+
+  const validateInputs = (regex, value) => {    
+    return regex.test(value);
   };
 
-  const validateEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  };
-
-  const validatePhone = (phone) => {
-    const regex = /^\+?\d{10,}$/;
-    return regex.test(phone);
+  const validateBirthdate = (birthdate) => {
+    const today = new Date();
+    const birthDate = new Date(birthdate);      
+    const maxAge = 100 * 365 * 24 * 60 * 60 * 1000; // 100 years  
+    if (birthDate > today) {
+        setBirthdayRule('Дата рождения не может быть больше текущей даты!')
+      return false; 
+    }
+    if (today - birthDate > maxAge) {
+        setBirthdayRule('Дата рождения указана неверно!')
+      return false; 
+    }
+  
+    return true; 
   };
 
   return (
@@ -62,7 +107,7 @@ export default function ApplicantsForm() {
         </div>
         <div className="form-area form-width">
           <div className="form-body">
-            <div className="form-item">
+            <div className={[nameRule ? "form-item form-rule" : "form-item"]}>
               <label>
                 Имя студента:
                 <input
@@ -70,61 +115,83 @@ export default function ApplicantsForm() {
                   name="name"
                   placeholder="Имя"
                   onChange={handleChange}
+                  value={formData.name}
+                  onFocus={() => nameRule && setNameRule("")}
+                  minLength="3"
                   required
                 />
+                {nameRule && <span>{nameRule}</span>}
               </label>
             </div>
-            <div className="form-item">
+            <div className={[surnameRule ? "form-item form-rule" : "form-item"]}>
               <label>
                 Фамилия студента:
                 <input
                   type="text"
                   name="surname"
                   placeholder="Фамилия"
+                  value={formData.surname}
                   onChange={handleChange}
+                  onFocus={() => surnameRule && setSurnameRule("")}
+                  minLength="3"
                   required
                 />
+                {surnameRule && <span>{surnameRule}</span>}
               </label>
             </div>
-            <div className="form-item">
+            <div className={[emailRule ? "form-item form-rule" : "form-item"]}>
               <label>
                 Электронная почта студента:
                 <input
                   type="email"
                   name="email"
+                  value={formData.email}
                   placeholder="Ел. почта"
                   onChange={handleChange}
+                  onFocus={() => emailRule && setEmailRule("")}
                   required
                 />
+                {emailRule && <span>{emailRule}</span>}
               </label>
             </div>
-            <div className="form-item">
+            <div className={[phoneRule ? "form-item form-rule" : "form-item"]}>
               <label>
                 Контактный телефон:
                 <input
                   type="tel"
-                  name="phone"
-                  placeholder="Моб. телефон"
+                  name="number"
+                  value={formData.number}
+                  placeholder="+7 747 000 00 00"
                   onChange={handleChange}
+                  onFocus={() => phoneRule && setPhoneRule("")}
                   required
                 />
+                {phoneRule && <span>{phoneRule}</span>}
               </label>
             </div>
-            <div className="form-item">
+            <div className={[birthdayRule ? "form-item form-rule" : "form-item"]}>
               <label>
                 Дата рождения студента:
                 <input
                   type="date"
                   name="birthday"
+                  value={formData.birthday}
                   onChange={handleChange}
+                  onFocus={() => birthdayRule && setBirthdayRule("")}
                   required
                 />
+                {birthdayRule && <span>{birthdayRule}</span>}
               </label>
             </div>
             <div className="form-item">
               <label>
                 Ваш коментарий / вопрос:
-                <textarea type="text" name="comment" onChange={handleChange} />
+                <textarea 
+                type="text" 
+                name="clientText" 
+                value={formData.clientText}
+                onChange={handleChange} 
+                />
               </label>
             </div>
             <button className="form-button" type="submit">

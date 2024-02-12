@@ -24,7 +24,7 @@ export async function GET(req) {
 export async function POST(req, res) {
     const body = await req.json()
     //console.log("POST", body)
-    const {name, surname, birthday, email, number, clientText, adminText, status} = body
+    const {name, surname, birthday, email, number, clientText} = body
     try {
         connectToDB()
         
@@ -34,9 +34,8 @@ export async function POST(req, res) {
             birthday, 
             email, 
             number, 
-            clientText, 
-            adminText, 
-            status,
+            clientText,            
+            status:"new",
         })
         
         await newClient.save()
